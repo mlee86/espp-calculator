@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/espp-calculator/static/css/main.073c9b0a.css",
+    "main.js": "/espp-calculator/static/js/main.bd7b9297.js",
+    "static/js/787.c371445f.chunk.js": "/espp-calculator/static/js/787.c371445f.chunk.js",
+    "index.html": "/espp-calculator/index.html",
+    "main.073c9b0a.css.map": "/espp-calculator/static/css/main.073c9b0a.css.map",
+    "main.bd7b9297.js.map": "/espp-calculator/static/js/main.bd7b9297.js.map",
+    "787.c371445f.chunk.js.map": "/espp-calculator/static/js/787.c371445f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.bd7b9297.js"
+  ]
+}
