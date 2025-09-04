@@ -1,6 +1,7 @@
 import { useESPPCalculatorContext } from "../hooks/ESPPCalculatorContext";
 import Icons from "../Constants/SvgContants";
-import ResultsTableItem from "./ResultsTableItem";
+import Constants from "../Constants/Constants";
+import ResultsTableItem from "./ESPPResultsTableItem";
 
 const ESPPResultsTable = () => {
   const { investment, purchasePrice, sharesPurchased, profit, effectiveBonus } =
@@ -12,32 +13,32 @@ const ESPPResultsTable = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <ResultsTableItem
         icon={Icons.bankNotes}
-        label="Total Investment"
+        label={Constants.TOTAL_INVESTMENT}
         value={`$${numberWithCommas(investment.toFixed(2))}`}
       />
       <ResultsTableItem
         icon={Icons.currencyDollar}
-        label="Purchase Price"
+        label={Constants.PURCHASE_PRICE}
         value={numberWithCommas(purchasePrice.toFixed(2))}
       />
       <ResultsTableItem
         icon={Icons.rectangleStock}
-        label="Shares Purchased"
+        label={Constants.SHARES_PURCHASED}
         value={numberWithCommas(sharesPurchased.toFixed(2))}
       />
       <ResultsTableItem
         icon={Icons.wallet}
-        label="Total Profit"
+        label={Constants.TOTAL_PROFIT}
         value={`$${numberWithCommas(profit.toFixed(2))}`}
       />
       <ResultsTableItem
         icon={Icons.plusCircle}
-        label="Effective Bonus"
+        label={Constants.EFFECTIVE_BONUS}
         value={`${effectiveBonus.toFixed(2)}%`}
       />
       <ResultsTableItem
         icon={Icons.arrowTrendingUp}
-        label="Profit"
+        label={Constants.PROFIT_PERCENTAGE}
         value={`${((profit / investment) * 100).toFixed(2)}%`}
       />
     </div>

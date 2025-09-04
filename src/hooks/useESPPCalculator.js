@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react';
-
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
+import { useState, useEffect } from "react";
+import Constants from "../Constants/Constants";
 
 const useESPPCalculator = () => {
   const [isSalary, setIsSalary] = useState(true);
   const [salary, setSalary] = useState(100000);
-  const [hourlyRate, setHourlyRate] = useState(0);
-  const [sharePrice, setSharePrice] = useState(300);
+  const [hourlyRate, setHourlyRate] = useState(20);
+  const [sharePrice, setSharePrice] = useState(400);
   const [investmentPercent, setInvestmentPercent] = useState(20);
   const [discount, setDiscount] = useState(15);
-  const [selectedPeriod, setSelectedPeriod] = useState('biWeekly');
+  const [selectedPeriod, setSelectedPeriod] = useState(Constants.FULLYEAR);
   const [investment, setInvestment] = useState(0);
   const [annualInvestment, setAnnualInvestment] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
@@ -21,7 +18,15 @@ const useESPPCalculator = () => {
 
   useEffect(() => {
     calculateEspp();
-  }, [salary, hourlyRate, sharePrice, investmentPercent, discount, selectedPeriod, isSalary]);
+  }, [
+    salary,
+    hourlyRate,
+    sharePrice,
+    investmentPercent,
+    discount,
+    selectedPeriod,
+    isSalary,
+  ]);
 
   const calculateEspp = () => {
     const maxAnnualContribution = 25000;
@@ -37,16 +42,22 @@ const useESPPCalculator = () => {
     let finalInvestmentPercent = investmentPercent;
 
     if (annualIncome > 0) {
-      const maxInvestmentPercentage = ((maxAnnualContribution * (1 - discount / 100)) / annualIncome) * 100;
-      finalInvestmentPercent = Math.min(investmentPercent, maxInvestmentPercentage, 20);
+      const maxInvestmentPercentage =
+        ((maxAnnualContribution * (1 - discount / 100)) / annualIncome) * 100;
+      finalInvestmentPercent = Math.min(
+        investmentPercent,
+        maxInvestmentPercentage,
+        20
+      );
     }
     setInvestmentPercent(finalInvestmentPercent);
 
     let baseInvestment = 0;
     if (isSalary) {
-      baseInvestment = (salary / payPeriodsPerYear) * (finalInvestmentPercent / 100);
+      baseInvestment =
+        (salary / payPeriodsPerYear) * (finalInvestmentPercent / 100);
     } else {
-      baseInvestment = (hourlyRate * 40 * 2) * (finalInvestmentPercent / 100);
+      baseInvestment = hourlyRate * 40 * 2 * (finalInvestmentPercent / 100);
     }
 
     const annual = baseInvestment * payPeriodsPerYear;
@@ -59,9 +70,9 @@ const useESPPCalculator = () => {
     const priceAfterDiscount = sharePrice * (1 - discount / 100);
     setPurchasePrice(priceAfterDiscount);
 
-    if (selectedPeriod === 'biWeekly') {
+    if (selectedPeriod === Constants.BIWEEKLY) {
       periodInvestment = baseInvestment;
-    } else if (selectedPeriod === 'halfYear') {
+    } else if (selectedPeriod === Constants.HALFYEAR) {
       periodInvestment = baseInvestment * (payPeriodsPerYear / 2);
     } else {
       periodInvestment = annual;
@@ -84,21 +95,21 @@ const useESPPCalculator = () => {
     const { id, value } = e.target;
     const re = /^[0-9.]*$/;
 
-    if (value === '' || re.test(value)) {
+    if (value === "" || re.test(value)) {
       switch (id) {
-        case 'salary':
+        case Constants.SALARY:
           setSalary(Number(value));
           break;
-        case 'hourlyRate':
+        case Constants.HOURLY_RATE:
           setHourlyRate(Number(value));
           break;
-        case 'sharePrice':
+        case Constants.SHARE_PRICE:
           setSharePrice(Number(value));
           break;
-        case 'investmentPercent':
+        case Constants.INVESTMENT_PERCENT:
           setInvestmentPercent(Number(value));
           break;
-        case 'discount':
+        case Constants.DISCOUNT:
           if (value <= 20) {
             setDiscount(Number(value));
           }
@@ -110,11 +121,28 @@ const useESPPCalculator = () => {
   };
 
   return {
-    isSalary, setIsSalary, salary, setSalary, hourlyRate, setHourlyRate,
-    sharePrice, setSharePrice, investmentPercent, setInvestmentPercent,
-    discount, setDiscount, selectedPeriod, setSelectedPeriod,
-    investment, annualInvestment, purchasePrice, sharesPurchased, profit, effectiveBonus,
-    handleInputChange, calculateEspp
+    isSalary,
+    setIsSalary,
+    salary,
+    setSalary,
+    hourlyRate,
+    setHourlyRate,
+    sharePrice,
+    setSharePrice,
+    investmentPercent,
+    setInvestmentPercent,
+    discount,
+    setDiscount,
+    selectedPeriod,
+    setSelectedPeriod,
+    investment,
+    annualInvestment,
+    purchasePrice,
+    sharesPurchased,
+    profit,
+    effectiveBonus,
+    handleInputChange,
+    calculateEspp,
   };
 };
 
