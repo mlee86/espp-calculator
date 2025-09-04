@@ -23,7 +23,7 @@ const App = () => {
   // Use useEffect hook to calculate ESPP values whenever a relevant state changes
   useEffect(() => {
     calculateEspp();
-  }, [salary, hourlyRate, investmentPercent, discount, selectedPeriod, isSalary]);
+  }, [salary, hourlyRate, sharePrice, investmentPercent, discount, selectedPeriod, isSalary]);
 
   const calculateEspp = () => {
     const maxAnnualContribution = 25000;
