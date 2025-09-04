@@ -18,7 +18,7 @@ const App = () => {
   const [purchasePrice, setPurchasePrice] = useState(0);
   const [sharesPurchased, setSharesPurchased] = useState(0);
   const [profit, setProfit] = useState(0);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [effectiveBonus, setEffectiveBonus] = useState(0);
 
   // Use useEffect hook to calculate ESPP values whenever a relevant state changes
   useEffect(() => {
@@ -26,14 +26,36 @@ const App = () => {
   }, [salary, hourlyRate, investmentPercent, discount, selectedPeriod, isSalary]);
 
   const calculateEspp = () => {
-    let baseInvestment = 0;
+    const maxAnnualContribution = 25000;
     const payPeriodsPerYear = 26;
+    let annualIncome = 0;
 
     if (isSalary) {
-      baseInvestment = (salary / payPeriodsPerYear) * (investmentPercent / 100);
+      annualIncome = salary;
     } else {
       // Assuming a standard 40-hour work week
-      baseInvestment = (hourlyRate * 40 * 2) * (investmentPercent / 100);
+      annualIncome = hourlyRate * 40 * 52;
+    }
+
+    let finalInvestmentPercent = investmentPercent;
+
+    // Check if annual income is greater than 0 to avoid division by zero
+    if (annualIncome > 0) {
+      // Correct calculation for the maximum investment percentage based on the $25,000 FMV limit
+      const maxInvestmentPercentage = ((maxAnnualContribution * (1 - discount / 100)) / annualIncome) * 100;
+      
+      // Cap the investment percentage at the legal max or 20%, whichever is lower
+      finalInvestmentPercent = Math.min(investmentPercent, maxInvestmentPercentage, 20);
+    }
+    
+    // Update the state with the clamped value
+    setInvestmentPercent(finalInvestmentPercent);
+
+    let baseInvestment = 0;
+    if (isSalary) {
+      baseInvestment = (salary / payPeriodsPerYear) * (finalInvestmentPercent / 100);
+    } else {
+      baseInvestment = (hourlyRate * 40 * 2) * (finalInvestmentPercent / 100);
     }
 
     const annual = baseInvestment * payPeriodsPerYear;
@@ -60,15 +82,11 @@ const App = () => {
     setInvestment(periodInvestment);
     setSharesPurchased(sharesAmount);
     setProfit(profitAmount);
-
-    // Check for the $25,000 annual contribution limit based on pre-discount value
-    const maxAnnualContribution = 25000;
-    const maxContributionPreDiscount = maxAnnualContribution / (1 + (discount / 100));
-
-    if (annual > maxContributionPreDiscount) {
-      setAlertMessage(`Warning: Your annual investment of $${numberWithCommas(annual.toFixed(2))} exceeds the legal limit of $${numberWithCommas(maxContributionPreDiscount.toFixed(2))} pre-discount.`);
-    } else {
-      setAlertMessage('');
+    
+    // Calculate the effective bonus based on annual income
+    if (annualIncome > 0) {
+      const bonus = (profitAmount / annualIncome) * 100;
+      setEffectiveBonus(bonus);
     }
   };
 
@@ -90,9 +108,7 @@ const App = () => {
           setSharePrice(Number(value));
           break;
         case 'investmentPercent':
-          if (value <= 20) {
-            setInvestmentPercent(Number(value));
-          }
+          setInvestmentPercent(Number(value));
           break;
         case 'discount':
           if (value <= 20) {
@@ -115,13 +131,6 @@ const App = () => {
           <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
             Calculate your potential profit from your Employee Stock Purchase Plan.
           </p>
-
-          {alertMessage && (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
-              <p className="font-bold">Heads up!</p>
-              <p>{alertMessage}</p>
-            </div>
-          )}
 
           <div className="flex justify-center mb-6">
             <button
@@ -239,7 +248,7 @@ const App = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 6v2m0 6v2M12 12c-1.657 0-3-1.493-3-2s1.343-2 3-2 3 1.493 3 2 1.343 2 3 2" />
                   </svg>
                 </span>
-                <p className="text-gray-700 dark:text-gray-300">Total Investment ({selectedPeriod === 'biWeekly' ? 'Bi-weekly' : selectedPeriod === 'halfYear' ? 'Half-year' : 'Full Year'}):</p>
+                <p className="text-gray-700 dark:text-gray-300">Total Investment:</p>
                 <p className="font-bold text-gray-900 dark:text-white">${numberWithCommas(investment.toFixed(2))}</p>
               </div>
               <div className="flex items-center space-x-2">
@@ -270,6 +279,15 @@ const App = () => {
                 </span>
                 <p className="text-gray-700 dark:text-gray-300">Total Profit:</p>
                 <p className="font-bold text-gray-900 dark:text-white">${numberWithCommas(profit.toFixed(2))}</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-600 dark:text-blue-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 6v2m0 6v2M12 12c-1.657 0-3-1.493-3-2s1.343-2 3-2 3 1.493 3 2 1.343 2 3 2" />
+                  </svg>
+                </span>
+                <p className="text-gray-700 dark:text-gray-300">Effective Bonus:</p>
+                <p className="font-bold text-gray-900 dark:text-white">{effectiveBonus.toFixed(2)}%</p>
               </div>
             </div>
           </div>
