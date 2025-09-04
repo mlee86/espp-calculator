@@ -12,7 +12,7 @@ const App = () => {
   const [sharePrice, setSharePrice] = useState(300);
   const [investmentPercent, setInvestmentPercent] = useState(20);
   const [discount, setDiscount] = useState(15);
-  const [selectedPeriod, setSelectedPeriod] = useState('biWeekly');
+  const [selectedPeriod, setSelectedPeriod] = useState('fullYear');
   const [investment, setInvestment] = useState(0);
   const [annualInvestment, setAnnualInvestment] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
@@ -289,7 +289,29 @@ const App = () => {
                 <p className="text-gray-700 dark:text-gray-300">Effective Bonus:</p>
                 <p className="font-bold text-gray-900 dark:text-white">{effectiveBonus.toFixed(2)}%</p>
               </div>
+                            <div className="flex items-center space-x-2">
+                <span className="text-blue-600 dark:text-blue-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 6v2m0 6v2M12 12c-1.657 0-3-1.493-3-2s1.343-2 3-2 3 1.493 3 2 1.343 2 3 2" />
+                  </svg>
+                </span>
+                <p className="text-gray-700 dark:text-gray-300">Profit:</p>
+                <p className="font-bold text-gray-900 dark:text-white">{(profit/investment * 100).toFixed(2)}%</p>
+              </div>
             </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-gray-200 dark:bg-gray-700 rounded-2xl">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">What is an ESPP?</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              An Employee Stock Purchase Plan (ESPP) is a company-run program that allows employees to buy company stock at a discount. The most common discount is 15% off the stock's market price. This is a powerful benefit that can generate significant returns with minimal risk.
+            </p>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              The IRS imposes a limit on the total value of stock that can be purchased through an ESPP. The fair market value (FMV) of the stock you purchase, before the discount, cannot exceed $25,000 in any single calendar year. Your contribution percentage will be capped to ensure you do not exceed this limit.
+            </p>
+            <p className="text-gray-600 dark:text-gray-300">
+              The profit from an ESPP is the difference between the stock's market price and your discounted purchase price. By contributing a portion of your salary, you automatically receive this bonus in the form of shares, which can then be sold for a profit.
+            </p>
           </div>
         </div>
       </div>
