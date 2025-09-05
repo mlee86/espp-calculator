@@ -69,7 +69,6 @@ const useESPPCalculator = () => {
 
     const priceAfterDiscount = sharePrice * (1 - discount / 100);
     setPurchasePrice(priceAfterDiscount);
-
     if (selectedPeriod === Constants.BIWEEKLY) {
       periodInvestment = baseInvestment;
     } else if (selectedPeriod === Constants.HALFYEAR) {
@@ -81,12 +80,16 @@ const useESPPCalculator = () => {
     sharesAmount = periodInvestment / priceAfterDiscount;
     profitAmount = sharesAmount * (sharePrice - priceAfterDiscount);
 
+    let annualSharesAmount = 0;
+    let annualProfitAmount = 0;
+    annualSharesAmount = annual / priceAfterDiscount;
+    annualProfitAmount = annualSharesAmount * (sharePrice - priceAfterDiscount);
+
     setInvestment(periodInvestment);
     setSharesPurchased(sharesAmount);
     setProfit(profitAmount);
-
     if (annualIncome > 0) {
-      const bonus = (profitAmount / annualIncome) * 100;
+      const bonus = (annualProfitAmount / annualIncome) * 100;
       setEffectiveBonus(bonus);
     }
   };
