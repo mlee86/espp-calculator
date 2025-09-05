@@ -13,5 +13,7 @@ const Constants = {
   SHARE_PRICE: "sharePrice",
   INVESTMENT_PERCENT: "investmentPercent",
   DISCOUNT: "discount",
+  ANNUAL_SALARY: "Annual Salary",
+  HOURLY_RATE: "Hourly Rate",
 };
 export default Constants;

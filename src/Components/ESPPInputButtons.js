@@ -1,11 +1,12 @@
 import React from "react";
 import InputButton from "./InputButton";
+import Constants from "../Constants/Constants";
 
 const ESPPInputButtons = () => {
   return (
     <div className="flex justify-center mb-6">
-      <InputButton label="Annual Salary" value={true} />
-      <InputButton label="Hourly Rate" value={false} />
+      <InputButton label={Constants.ANNUAL_SALARY} value={true} />
+      <InputButton label={Constants.HOURLY_RATE} value={false} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ const ESPPResultsTable = () => {
       <ResultsTableItem
         icon={Icons.currencyDollar}
         label={Constants.PURCHASE_PRICE}
-        value={numberWithCommas(purchasePrice.toFixed(2))}
+        value={`$${numberWithCommas(purchasePrice.toFixed(2))}`}
       />
       <ResultsTableItem
         icon={Icons.rectangleStock}
